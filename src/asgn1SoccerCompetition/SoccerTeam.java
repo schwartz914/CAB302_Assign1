@@ -156,8 +156,22 @@ public class SoccerTeam implements SportsTeam, Comparable<SoccerTeam>{
 	 * @throws TeamException If the number of goals scored or conceded is an unrealistic number (less than 0 or greater than 20).
 	 */
 	public void playMatch(int goalsFor, int goalsAgainst) throws TeamException{
-
-		// TO DO
+		
+		if(goalsFor < 0 || goalsAgainst < 0 || goalsFor > 20 || goalsAgainst > 20){
+			throw new TeamException();
+		} else {
+			this.goalsScoredSeason += goalsFor;
+			this.goalsConcededSeason += goalsAgainst;
+		}
+		if(goalsFor == goalsAgainst) {
+			this.matchesDrawn++;
+			this.competitionPoints += 1;
+		} else if (goalsFor > goalsAgainst ) {
+			this.matchesWon++;
+			this.competitionPoints += 3;
+		} else {
+			this.matchesLost++;
+		}
 		
 	}	
 	

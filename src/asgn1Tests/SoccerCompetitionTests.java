@@ -19,6 +19,26 @@ import asgn1SoccerCompetition.SoccerTeam;
  *
  */
 public class SoccerCompetitionTests {
+	SoccerCompetition soccerCompetition;
+	
+	@Before
+	public void setup() {
+		soccerCompetition = new SoccerCompetition("Test", 1, 4);
+	}
+	
+	@Test
+	public void GetLeagueNumWrong() throws CompetitionException{
+		SoccerLeague soccerLeague = new SoccerLeague(1);
+				//soccerCompetition.getLeague(1);;
+		assertEquals(soccerLeague, soccerCompetition.getLeague(1));
+	}
+	
+	@Test
+	public void GetLeagueNumCorrect() throws CompetitionException{
+		SoccerLeague soccerLeague = soccerCompetition.getLeague(0);
+		//assertThat(soccerLeague, is(soccerCompetition.getLeague(0)));
+	}
+	
 
 }
 

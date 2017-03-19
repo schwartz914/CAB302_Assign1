@@ -17,6 +17,23 @@ import asgn1SoccerCompetition.SoccerTeam;
  *
  */
 public class SoccerLeagueTests {
-
+	SoccerLeague soccerLeague;
+	
+	@Before
+	public void setup() {
+		soccerLeague = new SoccerLeague(4);
+	}
+	
+	@Test
+	public void getRequiredTeams() {
+		int numTeams = soccerLeague.getRequiredNumTeams();
+		assertEquals(numTeams, 4);
+	}
+	
+	@Test
+	public void getBottomTeam() throws LeagueException{
+		SoccerTeam botTeam = soccerLeague.getBottomTeam();
+		
+	}
 }
 

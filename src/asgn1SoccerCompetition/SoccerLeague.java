@@ -31,7 +31,8 @@ public class SoccerLeague implements SportsLeague{
 	 * @param requiredTeams The number of teams required/limit for the league.
 	 */
 	public SoccerLeague (int requiredTeams){
-		// TO DO
+		this.requiredTeams = requiredTeams;
+		offSeason = true;
 	}
 
 	

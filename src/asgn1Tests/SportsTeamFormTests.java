@@ -15,5 +15,65 @@ import asgn1SportsUtils.WLD;
  *
  */
 public class SportsTeamFormTests {
+SportsTeamForm sportsTeamForm;
+	
+	@Before
+	public void setup() {
+		sportsTeamForm = new SportsTeamForm();
+	}
+	
+	@Test
+	public void defaultGameList() {
+		String expectedString = sportsTeamForm.toString();
+		assertEquals("-----", expectedString);
+	}
+	
+	@Test
+	public void addOneResult() {
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		String expectedString = sportsTeamForm.toString();
+		assertEquals("W----", expectedString);
+		}
+	
+	@Test
+	public void addSixResults() {
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		sportsTeamForm.addResultToForm(WLD.LOSS);
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		sportsTeamForm.addResultToForm(WLD.DRAW);
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		sportsTeamForm.addResultToForm(WLD.DRAW);
 
+		String resultString = sportsTeamForm.toString();
+		assertEquals("DWDWL", resultString);
+	}
+	
+	@Test
+	public void numGames() {
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		sportsTeamForm.addResultToForm(WLD.LOSS);
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		sportsTeamForm.addResultToForm(WLD.DRAW);
+		int numGames = sportsTeamForm.getNumGames();
+		assertEquals(4, numGames);
+	}
+	
+	@Test 
+	public void resetAfterOneGame() {
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		sportsTeamForm.resetForm();
+		int numGames = sportsTeamForm.getNumGames();
+		assertEquals(0, numGames);
+	}
+	
+	@Test 
+	public void resetAfterFourGames() {
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		sportsTeamForm.addResultToForm(WLD.LOSS);
+		sportsTeamForm.addResultToForm(WLD.WIN);
+		sportsTeamForm.addResultToForm(WLD.DRAW);
+		sportsTeamForm.resetForm();
+		int numGames = sportsTeamForm.getNumGames();
+		assertEquals(0, numGames);
+	}
 }
