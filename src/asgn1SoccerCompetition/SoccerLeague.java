@@ -20,6 +20,7 @@ public class SoccerLeague implements SportsLeague{
 	private int requiredTeams;
 	// Specifies is the league is in the off season
 	private boolean offSeason;
+	ArrayList<SoccerTeam> league;
 	
 	
 	/**
@@ -33,6 +34,7 @@ public class SoccerLeague implements SportsLeague{
 	public SoccerLeague (int requiredTeams){
 		this.requiredTeams = requiredTeams;
 		offSeason = true;
+		league = new ArrayList<SoccerTeam>(this.requiredTeams);
 	}
 
 	
@@ -45,7 +47,12 @@ public class SoccerLeague implements SportsLeague{
 	 * same official name has already been registered.
 	 */
 	public void registerTeam(SoccerTeam team) throws LeagueException {
-		// TO DO
+		String name = team.getOfficialName();
+		if(containsTeam(name) || isOffSeason() || getRegisteredNumTeams() >= getRequiredNumTeams()) {
+			throw new LeagueException();
+		} else {
+			league.add(team);
+		}
 	}
 	
 	/**
@@ -55,7 +62,12 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the season has not ended or if the team is not registered into the league.
 	 */
 	public void removeTeam(SoccerTeam team) throws LeagueException{
-		// TO DO
+		String name = team.getOfficialName();
+		if(!containsTeam(name) || !isOffSeason()) {
+			throw new LeagueException();
+		} else {
+			league.remove(team);
+		}
 	}
 	
 	/** 
@@ -64,7 +76,7 @@ public class SoccerLeague implements SportsLeague{
 	 * @return the current number of teams registered
 	 */
 	public int getRegisteredNumTeams(){
-		// TO DO
+		return league.size();
 	}
 	
 	/**
@@ -84,7 +96,14 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the number of registered teams does not equal the required number of teams or if the season has already started
 	 */
 	public void startNewSeason() throws LeagueException{
-		// TO DO 
+		if(getRegisteredNumTeams() >= getRequiredNumTeams() || isOffSeason()) {
+			throw new LeagueException();
+		} else {
+			for(SoccerTeam team : league) {
+				team.resetStats();
+				offSeason = !offSeason;
+			}
+		}
 	}
 	
 
@@ -94,7 +113,11 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if season has not started
 	 */
 	public void endSeason() throws LeagueException{
-		// TO DO 
+		if(isOffSeason()) {
+			throw new LeagueException();
+		} else {
+			offSeason = !offSeason;
+		}
 	}
 	
 	/**
@@ -173,7 +196,13 @@ public class SoccerLeague implements SportsLeague{
      * @return True if the team is registered to the league, false otherwise. 
      */
     public boolean containsTeam(String name){
-		// TO DO 
+		boolean team = false;
+    	if(league.contains(name)){
+			team = true;
+		} else {
+			team = false;
+		}
+    	return team;
     }
     
 }

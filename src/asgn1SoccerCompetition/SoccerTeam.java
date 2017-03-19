@@ -166,11 +166,14 @@ public class SoccerTeam implements SportsTeam, Comparable<SoccerTeam>{
 		if(goalsFor == goalsAgainst) {
 			this.matchesDrawn++;
 			this.competitionPoints += 1;
+			this.form.addResultToForm(WLD.DRAW);
 		} else if (goalsFor > goalsAgainst ) {
 			this.matchesWon++;
 			this.competitionPoints += 3;
+			this.form.addResultToForm(WLD.WIN);
 		} else {
 			this.matchesLost++;
+			this.form.addResultToForm(WLD.LOSS);
 		}
 		
 	}	
