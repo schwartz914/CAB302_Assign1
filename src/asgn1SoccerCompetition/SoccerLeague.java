@@ -20,7 +20,7 @@ public class SoccerLeague implements SportsLeague{
 	private int requiredTeams;
 	// Specifies is the league is in the off season
 	private boolean offSeason;
-	ArrayList<SoccerTeam> league;
+	private ArrayList<SoccerTeam> league;
 	
 	
 	/**
@@ -34,7 +34,7 @@ public class SoccerLeague implements SportsLeague{
 	public SoccerLeague (int requiredTeams){
 		this.requiredTeams = requiredTeams;
 		offSeason = true;
-		league = new ArrayList<SoccerTeam>(this.requiredTeams);
+		league = new ArrayList<SoccerTeam>(requiredTeams);
 	}
 
 	
@@ -48,7 +48,7 @@ public class SoccerLeague implements SportsLeague{
 	 */
 	public void registerTeam(SoccerTeam team) throws LeagueException {
 		String name = team.getOfficialName();
-		if(containsTeam(name) || isOffSeason() || getRegisteredNumTeams() >= getRequiredNumTeams()) {
+		if(containsTeam(name) || !isOffSeason() || getRegisteredNumTeams() >= getRequiredNumTeams()) {
 			throw new LeagueException();
 		} else {
 			league.add(team);
@@ -137,8 +137,14 @@ public class SoccerLeague implements SportsLeague{
 	 * @return The team object with the specified official name.
 	 * @throws LeagueException if no team has that official name.
 	 */
-	public SoccerTeam getTeamByOfficalName(String name) throws LeagueException{		
-		// TO DO 
+	public SoccerTeam getTeamByOfficalName(String name) throws LeagueException{
+		SoccerTeam named = null;
+		for(SoccerTeam searched : league) {
+			if (searched.equals(name)) {
+				named = searched;
+			}
+		}
+		return named;
 	}
 		
 	/**
@@ -151,15 +157,32 @@ public class SoccerLeague implements SportsLeague{
 	 * @param awayTeamGoals The number of goals scored by the away team.
 	 * @throws LeagueException If the season has not started or if both teams have the same official name. 
 	 */
+	
+	//Fix try catch exception.
 	public void playMatch(String homeTeamName, int homeTeamGoals, String awayTeamName, int awayTeamGoals) throws LeagueException{
-		// TO DO 
+		for(SoccerTeam team : league) {
+			try {
+				if(team.equals(homeTeamName)) {
+					team.playMatch(homeTeamGoals, awayTeamGoals);
+				} else if(team.equals(awayTeamName)) {
+					team.playMatch(awayTeamGoals, homeTeamGoals);
+				}
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}
+		}
+		sortTeams();
+		
 	}
 	
 	/**
 	 * Displays a ranked list of the teams in the league  to the screen.
 	 */
 	public void displayLeagueTable(){
-		// TO DO (optional)
+		for(SoccerTeam team : league) {
+			team.displayTeamDetails();
+		}
 	}	
 	
 	/**
@@ -169,7 +192,14 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the number of teams is zero or less than the required number of teams.
 	 */
 	public SoccerTeam getTopTeam() throws LeagueException{
-		// TO DO 
+		SoccerTeam topTeam = null;
+		try {
+			topTeam = league.get(0);
+		} catch(Exception e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return topTeam;
 	}
 
 	/**
@@ -179,14 +209,22 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the number of teams is zero or less than the required number of teams.
 	 */
 	public SoccerTeam getBottomTeam() throws LeagueException{
-		// TO DO 
+		SoccerTeam bottomTeam = null;
+		try {
+			bottomTeam = league.get(requiredTeams - 1);
+		} catch(Exception e){
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return bottomTeam;
 	}
+	
 
 	/** 
 	 * Sorts the teams in the league.
 	 */
     public void sortTeams(){		
-		// TO DO 
+		Collections.sort(league);
     }
     
     /**
