@@ -2,6 +2,8 @@ package asgn1SoccerCompetition;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import asgn1Exceptions.LeagueException;
 import asgn1Exceptions.TeamException;
@@ -20,7 +22,7 @@ public class SoccerLeague implements SportsLeague{
 	private int requiredTeams;
 	// Specifies is the league is in the off season
 	private boolean offSeason;
-	private ArrayList<SoccerTeam> league;
+	List<SoccerTeam> league;
 	
 	
 	/**
@@ -35,6 +37,7 @@ public class SoccerLeague implements SportsLeague{
 		this.requiredTeams = requiredTeams;
 		offSeason = true;
 		league = new ArrayList<SoccerTeam>(requiredTeams);
+		
 	}
 
 	
@@ -52,6 +55,7 @@ public class SoccerLeague implements SportsLeague{
 			throw new LeagueException();
 		} else {
 			league.add(team);
+			sortTeams();
 		}
 	}
 	
@@ -63,7 +67,7 @@ public class SoccerLeague implements SportsLeague{
 	 */
 	public void removeTeam(SoccerTeam team) throws LeagueException{
 		String name = team.getOfficialName();
-		if(!containsTeam(name) || !isOffSeason()) {
+		if(containsTeam(name) || !isOffSeason()) {
 			throw new LeagueException();
 		} else {
 			league.remove(team);
@@ -96,13 +100,13 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the number of registered teams does not equal the required number of teams or if the season has already started
 	 */
 	public void startNewSeason() throws LeagueException{
-		if(getRegisteredNumTeams() >= getRequiredNumTeams() || isOffSeason()) {
+		if(getRegisteredNumTeams() > getRequiredNumTeams() || !isOffSeason()) {
 			throw new LeagueException();
 		} else {
 			for(SoccerTeam team : league) {
 				team.resetStats();
-				offSeason = !offSeason;
 			}
+			offSeason = false;
 		}
 	}
 	
@@ -116,7 +120,7 @@ public class SoccerLeague implements SportsLeague{
 		if(isOffSeason()) {
 			throw new LeagueException();
 		} else {
-			offSeason = !offSeason;
+			offSeason = true;
 		}
 	}
 	
@@ -160,17 +164,18 @@ public class SoccerLeague implements SportsLeague{
 	
 	//Fix try catch exception.
 	public void playMatch(String homeTeamName, int homeTeamGoals, String awayTeamName, int awayTeamGoals) throws LeagueException{
-		for(SoccerTeam team : league) {
-			try {
-				if(team.equals(homeTeamName)) {
+		try{
+			for(SoccerTeam team : league) {
+				String name = team.getOfficialName();
+				if(homeTeamName.equals(name)) {
 					team.playMatch(homeTeamGoals, awayTeamGoals);
-				} else if(team.equals(awayTeamName)) {
+				} else if(awayTeamName.equals(name)) {
 					team.playMatch(awayTeamGoals, homeTeamGoals);
 				}
-			} catch (Exception e) {
-				System.out.println(e.getMessage());
-				e.printStackTrace();
 			}
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		sortTeams();
 		
@@ -223,8 +228,9 @@ public class SoccerLeague implements SportsLeague{
 	/** 
 	 * Sorts the teams in the league.
 	 */
-    public void sortTeams(){		
-		Collections.sort(league);
+    public void sortTeams(){
+    	Collections.sort(league);
+
     }
     
     /**
