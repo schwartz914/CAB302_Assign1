@@ -49,7 +49,6 @@ public class SoccerCompetition implements SportsCompetition{
 		}
 
 
-		// TO DO Complete 
 	}
 	
 	/**
@@ -63,7 +62,6 @@ public class SoccerCompetition implements SportsCompetition{
 	 */
 	public SoccerLeague getLeague(int leagueNum) throws CompetitionException{
 		return competition.get(leagueNum);
-		
 	}
 	
 
@@ -97,20 +95,18 @@ public class SoccerCompetition implements SportsCompetition{
 			
 			SoccerTeam botTeam;
 			SoccerTeam topTeam;
-			if(numLeagues > 1) {
 
-			}
 			
-			int i = 0;
-			while( i < numLeagues) {
-				botTeam = competition.get(0).getBottomTeam();
-				topTeam = competition.get(1).getTopTeam();
-				competition.get(1).removeTeam(topTeam);
-				competition.get(0).removeTeam(botTeam);
-				competition.get(0).registerTeam(topTeam);
-				competition.get(1).registerTeam(botTeam);				
+			int i = numLeagues - 1;
+			while( i > 0) {
+				botTeam = competition.get(i-1).getBottomTeam();
+				topTeam = competition.get(i).getTopTeam();
+				competition.get(i).removeTeam(topTeam);
+				competition.get(i-1).removeTeam(botTeam);
+				competition.get(i-1).registerTeam(topTeam);
+				competition.get(i).registerTeam(botTeam);				
 			
-				i++;
+				i--;
 			
 			} 
 			for(SoccerLeague league : competition) {

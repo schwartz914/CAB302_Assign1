@@ -50,12 +50,12 @@ public class SoccerLeague implements SportsLeague{
 	 * same official name has already been registered.
 	 */
 	public void registerTeam(SoccerTeam team) throws LeagueException {
-		String name = team.getOfficialName();
-		if(containsTeam(name) || !isOffSeason() || getRegisteredNumTeams() >= getRequiredNumTeams()) {
+		
+		if(containsTeam(team.getOfficialName()) || !isOffSeason() || getRegisteredNumTeams() >= getRequiredNumTeams()) {
 			throw new LeagueException();
 		} else {
 			league.add(team);
-			sortTeams();
+			
 		}
 	}
 	
@@ -106,6 +106,7 @@ public class SoccerLeague implements SportsLeague{
 			for(SoccerTeam team : league) {
 				team.resetStats();
 			}
+			sortTeams();
 			offSeason = false;
 		}
 	}
@@ -141,7 +142,7 @@ public class SoccerLeague implements SportsLeague{
 	 * @return The team object with the specified official name.
 	 * @throws LeagueException if no team has that official name.
 	 */
-	public SoccerTeam getTeamByOfficalName(String name) throws LeagueException{
+	public SoccerTeam getTeamByOfficalName(String name) throws LeagueException {
 		SoccerTeam named = null;
 		for(SoccerTeam searched : league) {
 			if (searched.equals(name)) {
@@ -173,11 +174,12 @@ public class SoccerLeague implements SportsLeague{
 					team.playMatch(awayTeamGoals, homeTeamGoals);
 				}
 			}
+			sortTeams();
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-		sortTeams();
+		
 		
 	}
 	
@@ -230,7 +232,6 @@ public class SoccerLeague implements SportsLeague{
 	 */
     public void sortTeams(){
     	Collections.sort(league);
-
     }
     
     /**
@@ -240,13 +241,12 @@ public class SoccerLeague implements SportsLeague{
      * @return True if the team is registered to the league, false otherwise. 
      */
     public boolean containsTeam(String name){
-		boolean team = false;
-    	if(league.contains(name)){
-			team = true;
+		if(league.contains(name)){
+			return true;
 		} else {
-			team = false;
+			return false;
 		}
-    	return team;
+    	
     }
     
 }
