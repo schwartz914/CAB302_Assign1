@@ -31,9 +31,7 @@ public class SportsTeamForm {
 	 */
 	public SportsTeamForm() {
 		gameList = new LinkedList<Character>();
-		for(int i = 0; i < maxLength; i++) {
-			gameList.add(null);
-		}
+
 		
 	}
 	
@@ -49,6 +47,7 @@ public class SportsTeamForm {
 	 */
 	public void addResultToForm(WLD result){ 
 		gameList.addFirst(result.getChar());
+		
 	}
 	
 	/**
