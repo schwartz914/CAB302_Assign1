@@ -52,10 +52,9 @@ public class SoccerLeague implements SportsLeague{
 	public void registerTeam(SoccerTeam team) throws LeagueException {
 		
 		if(containsTeam(team.getOfficialName()) || !isOffSeason() || getRegisteredNumTeams() >= getRequiredNumTeams()) {
-			throw new LeagueException();
+			throw new LeagueException("An error occured with the Team registration.");
 		} else {
 			league.add(team);
-			
 		}
 	}
 	
@@ -66,9 +65,8 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the season has not ended or if the team is not registered into the league.
 	 */
 	public void removeTeam(SoccerTeam team) throws LeagueException{
-		String name = team.getOfficialName();
-		if(containsTeam(name) || !isOffSeason()) {
-			throw new LeagueException();
+		if(containsTeam(team.getOfficialName()) || !isOffSeason()) {
+			throw new LeagueException("It is not the offseason or that team is not registered.");
 		} else {
 			league.remove(team);
 		}
@@ -101,7 +99,7 @@ public class SoccerLeague implements SportsLeague{
 	 */
 	public void startNewSeason() throws LeagueException{
 		if(getRegisteredNumTeams() > getRequiredNumTeams() || !isOffSeason()) {
-			throw new LeagueException();
+			throw new LeagueException("Please start the season or register more teams.");
 		} else {
 			for(SoccerTeam team : league) {
 				team.resetStats();
@@ -119,7 +117,7 @@ public class SoccerLeague implements SportsLeague{
 	 */
 	public void endSeason() throws LeagueException{
 		if(isOffSeason()) {
-			throw new LeagueException();
+			throw new LeagueException("");
 		} else {
 			offSeason = true;
 		}
@@ -167,10 +165,9 @@ public class SoccerLeague implements SportsLeague{
 	public void playMatch(String homeTeamName, int homeTeamGoals, String awayTeamName, int awayTeamGoals) throws LeagueException{
 		try{
 			for(SoccerTeam team : league) {
-				String name = team.getOfficialName();
-				if(homeTeamName.equals(name)) {
+				if(homeTeamName.equals(team.getOfficialName())) {
 					team.playMatch(homeTeamGoals, awayTeamGoals);
-				} else if(awayTeamName.equals(name)) {
+				} else if(awayTeamName.equals(team.getOfficialName())) {
 					team.playMatch(awayTeamGoals, homeTeamGoals);
 				}
 			}
@@ -178,9 +175,7 @@ public class SoccerLeague implements SportsLeague{
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
-		}
-		
-		
+		}	
 	}
 	
 	/**
@@ -246,7 +241,5 @@ public class SoccerLeague implements SportsLeague{
 		} else {
 			return false;
 		}
-    	
     }
-    
 }

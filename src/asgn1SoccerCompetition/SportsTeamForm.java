@@ -48,9 +48,7 @@ public class SportsTeamForm {
 	 *
 	 */
 	public void addResultToForm(WLD result){ 
-		char res = result.getChar();
-		gameList.addFirst(res);
-		
+		gameList.addFirst(result.getChar());
 	}
 	
 	/**
