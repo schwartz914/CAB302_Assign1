@@ -27,7 +27,7 @@ public class SoccerCompetition implements SportsCompetition{
 	List<SoccerLeague> competition;
 	//List<SoccerTeam> league;
 	private int numLeagues;
-	private int numTeams;
+	
 	/**
 	 * Creates the model for a new soccer competition with a specific name,
 	 * number of leagues, and number of games to display to indicate the teams
@@ -40,15 +40,12 @@ public class SoccerCompetition implements SportsCompetition{
 	public SoccerCompetition(String name, int numLeagues, int numTeams){
 		this.name = name;
 		this.numLeagues = numLeagues;
-		this.numTeams = numTeams;
 		
 		competition = new ArrayList<SoccerLeague>(numLeagues);
 		for(int i = 0; i < numLeagues; i++) {
-			SoccerLeague test = new SoccerLeague(numTeams);
-			competition.add(i, test);
+			SoccerLeague league = new SoccerLeague(numTeams);
+			competition.add(i, league);
 		}
-
-
 	}
 	
 	/**
@@ -77,10 +74,8 @@ public class SoccerCompetition implements SportsCompetition{
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
-
 	}
 
-	
 	/** 
 	 * Ends the season of each of the leagues in the competition. 
 	 * If there is more than one league then it handles promotion
