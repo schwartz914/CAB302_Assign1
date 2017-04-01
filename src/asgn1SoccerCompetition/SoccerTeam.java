@@ -146,7 +146,7 @@ public class SoccerTeam implements SportsTeam, Comparable<SoccerTeam>{
 	 * @return A string representing the recent results of the team.
 	 */
 	public String getFormString(){
-		return form.toString();
+		return this.form.toString();
 	}
 	
 	

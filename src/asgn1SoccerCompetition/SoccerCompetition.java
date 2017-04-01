@@ -4,7 +4,6 @@
 package asgn1SoccerCompetition;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import asgn1Exceptions.CompetitionException;

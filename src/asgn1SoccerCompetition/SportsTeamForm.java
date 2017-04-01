@@ -1,5 +1,6 @@
 package asgn1SoccerCompetition;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import asgn1SportsUtils.WLD;
@@ -21,7 +22,8 @@ public class SportsTeamForm {
 
 	// The number of recent games to show as the recent form of the team
 	private static final int maxLength = 5;
-	private LinkedList<Character> gameList;
+	
+	private LinkedList<WLD> gameList;
 
 
 	/**
@@ -30,7 +32,11 @@ public class SportsTeamForm {
 	 * 
 	 */
 	public SportsTeamForm() {
-		gameList = new LinkedList<Character>();
+		gameList = new LinkedList<WLD>();
+		for(int i = 0; i < maxLength; i++) {
+			gameList.addFirst(null);
+		}
+		
 
 		
 	}
@@ -45,8 +51,11 @@ public class SportsTeamForm {
 	 * @param result The result of the latest match
 	 *
 	 */
-	public void addResultToForm(WLD result){ 
-		gameList.addFirst(result.getChar());
+	public void addResultToForm(WLD result){
+		while(gameList.size() >= 5) {
+			gameList.remove(4);
+		}
+		gameList.addFirst(result);
 		
 	}
 	
@@ -63,9 +72,10 @@ public class SportsTeamForm {
 	 */
 	public String toString(){
 		String result = "";
+		 
 		for(int i=0; i < maxLength; i++) {
 			if(gameList.get(i) != null) {
-				result = result + gameList.get(i);
+				result = result + gameList.get(i).getChar();
 			} else {
 				result = result + '-';
 			}
@@ -82,7 +92,7 @@ public class SportsTeamForm {
 	 */
 	public int getNumGames(){
 		int count = 0;
-		for(int i = 0; i < maxLength; i++) {
+		for(int i = 0; i < gameList.size(); i++) {
 			if (gameList.get(i) != null){
 				count++;
 			}
@@ -95,7 +105,7 @@ public class SportsTeamForm {
 	 */
 	public void resetForm(){
 		for(int i = 0; i < maxLength; i++) {
-			gameList.addFirst(null);
+			addResultToForm(null);
 		}
 	}
 	

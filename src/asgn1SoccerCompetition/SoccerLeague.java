@@ -2,7 +2,6 @@ package asgn1SoccerCompetition;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import asgn1Exceptions.LeagueException;
@@ -22,7 +21,7 @@ public class SoccerLeague implements SportsLeague{
 	private int requiredTeams;
 	// Specifies is the league is in the off season
 	private boolean offSeason;
-	List<SoccerTeam> league;
+	private List<SoccerTeam> league;
 	
 	
 	/**
