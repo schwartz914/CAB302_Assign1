@@ -97,21 +97,21 @@ SoccerTeam soccerTeam;
 		assertEquals(20,goalConc);
 	}
 
-	@Test(expected = Exception.class)
+	@Test(expected = TeamException.class)
 	public void getGoalsConceededPosExceeded() throws TeamException {
 		soccerTeam.playMatch(0,21);
 		int goalConc = soccerTeam.getGoalsConcededSeason();
 		assertEquals(21,goalConc);
 	}
 	
-	@Test(expected = Exception.class)
+	@Test(expected = TeamException.class)
 	public void getGoalsConceededNegExceeded() throws TeamException {
 		soccerTeam.playMatch(-1,-2);
 		int goalConc = soccerTeam.getGoalsConcededSeason();
 		assertEquals(-2,goalConc);
 	}
 	
-	@Test(expected = Exception.class)
+	@Test(expected = TeamException.class)
 	public void getGoalsConceededMixedExceeded() throws TeamException {
 		soccerTeam.playMatch(31,-2);
 		int goalConc = soccerTeam.getGoalsConcededSeason();

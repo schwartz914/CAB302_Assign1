@@ -1,6 +1,5 @@
 package asgn1SoccerCompetition;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import asgn1SportsUtils.WLD;
@@ -22,7 +21,6 @@ public class SportsTeamForm {
 
 	// The number of recent games to show as the recent form of the team
 	private static final int maxLength = 5;
-	
 	private LinkedList<WLD> gameList;
 
 
@@ -35,10 +33,7 @@ public class SportsTeamForm {
 		gameList = new LinkedList<WLD>();
 		for(int i = 0; i < maxLength; i++) {
 			gameList.addFirst(null);
-		}
-		
-
-		
+		}		
 	}
 	
 	/**
@@ -56,7 +51,6 @@ public class SportsTeamForm {
 			gameList.remove(4);
 		}
 		gameList.addFirst(result);
-		
 	}
 	
 	/**
@@ -72,14 +66,12 @@ public class SportsTeamForm {
 	 */
 	public String toString(){
 		String result = "";
-		 
 		for(int i=0; i < maxLength; i++) {
 			if(gameList.get(i) != null) {
 				result = result + gameList.get(i).getChar();
 			} else {
 				result = result + '-';
 			}
-			
 		}
 		return result;
 	}
@@ -92,8 +84,8 @@ public class SportsTeamForm {
 	 */
 	public int getNumGames(){
 		int count = 0;
-		for(int i = 0; i < gameList.size(); i++) {
-			if (gameList.get(i) != null){
+		for(WLD game : gameList) {
+			if(game != null) {
 				count++;
 			}
 		}

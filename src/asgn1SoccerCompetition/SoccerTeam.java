@@ -42,7 +42,7 @@ public class SoccerTeam implements SportsTeam, Comparable<SoccerTeam>{
 	public SoccerTeam(String official, String nick) throws TeamException{
 		
 		if(official.equals(null) || official.equals("") || nick.equals(null) || nick.equals("")) {
-			throw new TeamException("Name cannot be blank");
+			throw new TeamException("Team Name cannot be blank");
 		}
 		
 		this.officialName = official;
@@ -159,8 +159,10 @@ public class SoccerTeam implements SportsTeam, Comparable<SoccerTeam>{
 	 */
 	public void playMatch(int goalsFor, int goalsAgainst) throws TeamException{
 		
-		if(goalsFor < 0 || goalsAgainst < 0 || goalsFor > 20 || goalsAgainst > 20){
+		if(goalsFor > 20 || goalsAgainst > 20){
 			throw new TeamException("Too many goals scored!");
+		} else if (goalsFor < 0 || goalsAgainst < 0 ) {
+			throw new TeamException("Can't Score Negative Goals!");
 		} else {
 			this.goalsScoredSeason += goalsFor;
 			this.goalsConcededSeason += goalsAgainst;

@@ -57,7 +57,11 @@ public class SoccerCompetition implements SportsCompetition{
 	 *  or equal to or greater than the number of leagues in the competition.
 	 */
 	public SoccerLeague getLeague(int leagueNum) throws CompetitionException{
-		return competition.get(leagueNum);
+		if(leagueNum > numLeagues || leagueNum < 0) {
+			throw new CompetitionException("That League does not exist");
+		} else {
+			return competition.get(leagueNum);
+		}
 	}
 	
 
@@ -69,7 +73,7 @@ public class SoccerCompetition implements SportsCompetition{
 			for (SoccerLeague league : competition) {
 				league.startNewSeason();
 			}
-		} catch(Exception e) {
+		} catch(LeagueException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
@@ -107,7 +111,7 @@ public class SoccerCompetition implements SportsCompetition{
 				league.sortTeams();
 			}
 			
-		} catch(Exception e) {
+		} catch(LeagueException e) {
 			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}

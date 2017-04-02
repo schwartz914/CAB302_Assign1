@@ -19,26 +19,63 @@ import asgn1SoccerCompetition.SoccerTeam;
  *
  */
 public class SoccerCompetitionTests {
-	SoccerCompetition soccerCompetition;
+	SoccerCompetition sc;
 	
 	@Before
 	public void setup() {
-		soccerCompetition = new SoccerCompetition("Test", 1, 4);
+		sc = new SoccerCompetition("Test", 1, 4);
 	}
 	
-	@Test
-	public void GetLeagueNumWrong() throws CompetitionException{
-		SoccerLeague soccerLeague = new SoccerLeague(1);
-				//soccerCompetition.getLeague(1);;
-		assertEquals(soccerLeague, soccerCompetition.getLeague(1));
-	}
 	
 	@Test
 	public void GetLeagueNumCorrect() throws CompetitionException{
-		SoccerLeague soccerLeague = soccerCompetition.getLeague(0);
-		//assertThat(soccerLeague, is(soccerCompetition.getLeague(0)));
+		SoccerLeague expectedLeague = sc.getLeague(0);
+		assertEquals(expectedLeague, sc.getLeague(0));
 	}
 	
+	//Why is this and next one not working.
+	@Test(expected = LeagueException.class)
+	public void startSeasonWithNoTeams() throws LeagueException, CompetitionException{
+		sc.getLeague(0).startNewSeason();
+		//sc.startSeason();
+		//Boolean offSeason = sc.getLeague(0).isOffSeason();
+		//assertTrue(offSeason);
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void startSeasonWithOneTeam() throws LeagueException, CompetitionException, TeamException{
+		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
+		sc.getLeague(0).registerTeam(team1);
+		//sc.getLeague(0).startNewSeason();
+		sc.startSeason();
+		//Boolean offSeason = sc.getLeague(0).isOffSeason();
+		//assertTrue(offSeason);
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void AdddingSameTeamTwice() throws LeagueException, CompetitionException, TeamException{
+		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
+		sc.getLeague(0).registerTeam(team1);
+		SoccerTeam team2 = new SoccerTeam("Chelsea", "Blues");
+		sc.getLeague(0).registerTeam(team2);
+		//Boolean offSeason = sc.getLeague(0).isOffSeason();
+		//assertTrue(offSeason);
+	}
+	
+	@Test
+	public void startSeason() throws LeagueException, CompetitionException, TeamException{
+		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
+		SoccerTeam team2 = new SoccerTeam("Manchester City", "City");
+		SoccerTeam team3 = new SoccerTeam("Manchester United", "Red Devils");
+		SoccerTeam team4 = new SoccerTeam("Southampton", "Saints");
+		sc.getLeague(0).registerTeam(team1);
+		sc.getLeague(0).registerTeam(team2);
+		sc.getLeague(0).registerTeam(team3);
+		sc.getLeague(0).registerTeam(team4);
+		sc.startSeason();
+		Boolean offSeason = sc.getLeague(0).isOffSeason();
+		assertFalse(offSeason);
+	}
 
 }
 

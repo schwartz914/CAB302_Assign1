@@ -50,8 +50,12 @@ public class SoccerLeague implements SportsLeague{
 	 */
 	public void registerTeam(SoccerTeam team) throws LeagueException {
 		
-		if(containsTeam(team.getOfficialName()) || !isOffSeason() || getRegisteredNumTeams() >= getRequiredNumTeams()) {
-			throw new LeagueException("An error occured with the Team registration.");
+		if(containsTeam(team.getOfficialName())) {
+			throw new LeagueException("That team is already registed");
+		} else if (!isOffSeason()) {
+			throw new LeagueException("The Season has already started.");
+		} else if (getRegisteredNumTeams() >= getRequiredNumTeams()) {
+			throw new LeagueException("The Maximum number of teams is already registed.");
 		} else {
 			league.add(team);
 		}
@@ -64,8 +68,10 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the season has not ended or if the team is not registered into the league.
 	 */
 	public void removeTeam(SoccerTeam team) throws LeagueException{
-		if(containsTeam(team.getOfficialName()) || !isOffSeason()) {
-			throw new LeagueException("It is not the offseason or that team is not registered.");
+		if(!containsTeam(team.getOfficialName())) {
+			throw new LeagueException("That team is not registered.");
+		} else if (!isOffSeason()) {
+			throw new LeagueException("The Season has not ended");
 		} else {
 			league.remove(team);
 		}
@@ -77,7 +83,8 @@ public class SoccerLeague implements SportsLeague{
 	 * @return the current number of teams registered
 	 */
 	public int getRegisteredNumTeams(){
-		return league.size();
+		int size =  league.size();
+		return size;
 	}
 	
 	/**
@@ -97,16 +104,18 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the number of registered teams does not equal the required number of teams or if the season has already started
 	 */
 	public void startNewSeason() throws LeagueException{
-		if(getRegisteredNumTeams() > getRequiredNumTeams() || !isOffSeason()) {
-			throw new LeagueException("Please start the season or register more teams.");
-		} else {
-			for(SoccerTeam team : league) {
-				team.resetStats();
-			}
-			sortTeams();
-			offSeason = false;
+			if(getRegisteredNumTeams() < getRequiredNumTeams()) {
+				throw new LeagueException("More teams are required to start the season.");
+			} else if(!isOffSeason()) {
+				throw new LeagueException("The Season has already started");
+			} else {
+				for(SoccerTeam team : league) {
+					team.resetStats();
+				}
+				sortTeams();
+				offSeason = false;
+				}
 		}
-	}
 	
 
 	/**
@@ -116,7 +125,7 @@ public class SoccerLeague implements SportsLeague{
 	 */
 	public void endSeason() throws LeagueException{
 		if(isOffSeason()) {
-			throw new LeagueException("");
+			throw new LeagueException("It is already the OffSeason");
 		} else {
 			offSeason = true;
 		}
@@ -140,13 +149,12 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if no team has that official name.
 	 */
 	public SoccerTeam getTeamByOfficalName(String name) throws LeagueException {
-		SoccerTeam named = null;
-		for(SoccerTeam searched : league) {
-			if (searched.equals(name)) {
-				named = searched;
+		for(SoccerTeam team : league) {
+			if (team.getOfficialName().equals(name)) {
+				return team;
 			}
 		}
-		return named;
+		throw new LeagueException("That team is not in the League.");
 	}
 		
 	/**
@@ -159,22 +167,26 @@ public class SoccerLeague implements SportsLeague{
 	 * @param awayTeamGoals The number of goals scored by the away team.
 	 * @throws LeagueException If the season has not started or if both teams have the same official name. 
 	 */
-	
-	//Fix try catch exception.
 	public void playMatch(String homeTeamName, int homeTeamGoals, String awayTeamName, int awayTeamGoals) throws LeagueException{
-		try{
-			for(SoccerTeam team : league) {
-				if(homeTeamName.equals(team.getOfficialName())) {
-					team.playMatch(homeTeamGoals, awayTeamGoals);
-				} else if(awayTeamName.equals(team.getOfficialName())) {
-					team.playMatch(awayTeamGoals, homeTeamGoals);
+		if(homeTeamName.equals(awayTeamName)) {
+			throw new LeagueException("Both Teams have the same name");
+		} else if(offSeason) {
+			throw new LeagueException("The Season hasn't started");
+		} else {
+			try{
+				for(SoccerTeam team : league) {
+					if(homeTeamName.equals(team.getOfficialName())) {
+						team.playMatch(homeTeamGoals, awayTeamGoals);
+					} else if(awayTeamName.equals(team.getOfficialName())) {
+						team.playMatch(awayTeamGoals, homeTeamGoals);
+					}
 				}
-			}
-			sortTeams();
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-			e.printStackTrace();
-		}	
+				sortTeams();
+			} catch(TeamException e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+			}	
+		}
 	}
 	
 	/**
@@ -193,14 +205,11 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the number of teams is zero or less than the required number of teams.
 	 */
 	public SoccerTeam getTopTeam() throws LeagueException{
-		SoccerTeam topTeam = null;
-		try {
-			topTeam = league.get(0);
-		} catch(Exception e){
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+		if(getRegisteredNumTeams() < getRequiredNumTeams()) {
+			throw new LeagueException("Not enough Teams Registered");
+		} else { 
+			return league.get(0);
 		}
-		return topTeam;
 	}
 
 	/**
@@ -210,14 +219,12 @@ public class SoccerLeague implements SportsLeague{
 	 * @throws LeagueException if the number of teams is zero or less than the required number of teams.
 	 */
 	public SoccerTeam getBottomTeam() throws LeagueException{
-		SoccerTeam bottomTeam = null;
-		try {
-			bottomTeam = league.get(requiredTeams - 1);
-		} catch(Exception e){
-			System.out.println(e.getMessage());
-			e.printStackTrace();
+		if(getRegisteredNumTeams() < getRequiredNumTeams()) {
+			throw new LeagueException("Not enough Teams Registered");
+		} else { 
+			return league.get(requiredTeams - 1);
 		}
-		return bottomTeam;
+
 	}
 	
 
@@ -235,10 +242,11 @@ public class SoccerLeague implements SportsLeague{
      * @return True if the team is registered to the league, false otherwise. 
      */
     public boolean containsTeam(String name){
-		if(league.contains(name)){
-			return true;
-		} else {
-			return false;
-		}
+    	for(SoccerTeam team : league) {
+    		if(team.getOfficialName().equals(name)) {
+    			return true;
+    		}
+    	}
+    	return false;
     }
 }
