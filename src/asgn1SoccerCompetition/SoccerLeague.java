@@ -83,8 +83,7 @@ public class SoccerLeague implements SportsLeague{
 	 * @return the current number of teams registered
 	 */
 	public int getRegisteredNumTeams(){
-		int size =  league.size();
-		return size;
+		return league.size();
 	}
 	
 	/**

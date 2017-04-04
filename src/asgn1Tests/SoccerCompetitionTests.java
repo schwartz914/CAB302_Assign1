@@ -23,7 +23,7 @@ public class SoccerCompetitionTests {
 	
 	@Before
 	public void setup() {
-		sc = new SoccerCompetition("Test", 1, 4);
+		sc = new SoccerCompetition("Test", 2, 4);
 	}
 	
 	
@@ -46,8 +46,8 @@ public class SoccerCompetitionTests {
 	public void startSeasonWithOneTeam() throws LeagueException, CompetitionException, TeamException{
 		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
 		sc.getLeague(0).registerTeam(team1);
-		//sc.getLeague(0).startNewSeason();
-		sc.startSeason();
+		sc.getLeague(0).startNewSeason();
+		//sc.startSeason();
 		//Boolean offSeason = sc.getLeague(0).isOffSeason();
 		//assertTrue(offSeason);
 	}
