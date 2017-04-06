@@ -36,10 +36,8 @@ public class SoccerLeague implements SportsLeague{
 		this.requiredTeams = requiredTeams;
 		offSeason = true;
 		league = new ArrayList<SoccerTeam>(requiredTeams);
-		
 	}
 
-	
 	/**
 	 * Registers a team to the league.
 	 * 
@@ -49,9 +47,8 @@ public class SoccerLeague implements SportsLeague{
 	 * same official name has already been registered.
 	 */
 	public void registerTeam(SoccerTeam team) throws LeagueException {
-		
 		if(containsTeam(team.getOfficialName())) {
-			throw new LeagueException("That team is already registed");
+			throw new LeagueException("A team with the same name is already registed");
 		} else if (!isOffSeason()) {
 			throw new LeagueException("The Season has already started.");
 		} else if (getRegisteredNumTeams() >= getRequiredNumTeams()) {
@@ -138,8 +135,6 @@ public class SoccerLeague implements SportsLeague{
 		return this.offSeason;
 	}
 	
-	
-	
 	/**
 	 * Returns a team with a specific name.
 	 * 
@@ -173,6 +168,7 @@ public class SoccerLeague implements SportsLeague{
 			throw new LeagueException("The Season hasn't started");
 		} else {
 			try{
+				//Cycles through all teams in the league to assign goals scored and against. Sorts the league after complete.
 				for(SoccerTeam team : league) {
 					if(homeTeamName.equals(team.getOfficialName())) {
 						team.playMatch(homeTeamGoals, awayTeamGoals);

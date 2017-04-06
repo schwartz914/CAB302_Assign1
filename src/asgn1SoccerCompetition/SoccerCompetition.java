@@ -23,8 +23,7 @@ import asgn1Exceptions.LeagueException;
 public class SoccerCompetition implements SportsCompetition{
 	
 	String name;
-	List<SoccerLeague> competition;
-	//List<SoccerTeam> league;
+	private List<SoccerLeague> competition;
 	private int numLeagues;
 	
 	/**
@@ -87,6 +86,7 @@ public class SoccerCompetition implements SportsCompetition{
 	 */
 	public void endSeason()  {
 		try {
+			//Ends the season for each league.
 			for (SoccerLeague league : competition) {
 				league.endSeason();
 			}
@@ -95,16 +95,17 @@ public class SoccerCompetition implements SportsCompetition{
 			SoccerTeam topTeam;
 
 			
-			int i = numLeagues - 1;
-			while( i > 0) {
-				botTeam = competition.get(i-1).getBottomTeam();
-				topTeam = competition.get(i).getTopTeam();
-				competition.get(i).removeTeam(topTeam);
-				competition.get(i-1).removeTeam(botTeam);
-				competition.get(i-1).registerTeam(topTeam);
-				competition.get(i).registerTeam(botTeam);				
+			int leagueNo = numLeagues - 1;
+			while( leagueNo > 0) {
+				//Starts at the lowest league to prevent teams moving more than 1 league.
+				botTeam = competition.get(leagueNo-1).getBottomTeam();
+				topTeam = competition.get(leagueNo).getTopTeam();
+				competition.get(leagueNo).removeTeam(topTeam);
+				competition.get(leagueNo-1).removeTeam(botTeam);
+				competition.get(leagueNo-1).registerTeam(topTeam);
+				competition.get(leagueNo).registerTeam(botTeam);				
 			
-				i--;
+				leagueNo--;
 			
 			} 
 			for(SoccerLeague league : competition) {
@@ -127,7 +128,8 @@ public class SoccerCompetition implements SportsCompetition{
 		int i = 0;
 		for(SoccerLeague league : competition) {
 			System.out.println("---- League" + (i +1) + " ----");
-			System.out.println("OfficialName"  + '\t' + "Nick Name" + '\t' + "Form" + '\t' +  "Played" + '\t' + "Won" + '\t' + "Lost" +'\t' + "Drawn" + '\t' + "For" + '\t' + "Against" + '\t' + "GlDiff" + '\t' + "Points");
+			System.out.println("OfficialName"  + '\t' + "Nick Name" + '\t' + "Form" + '\t' +  "Played" + '\t' + 
+					"Won" + '\t' + "Lost" +'\t' + "Drawn" + '\t' + "For" + '\t' + "Against" + '\t' + "GlDiff" + '\t' + "Points");
 			league.displayLeagueTable();
 			i++;
 
@@ -136,7 +138,8 @@ public class SoccerCompetition implements SportsCompetition{
 		//System.out.println("---- League" + (i +1) + " ----");
 		// HINT The heading for each league is
 		//	System.out.println("---- League" + (i +1) + " ----");
-		//  System.out.println("Official Name" +  '\t' +  "Nick Name" + '\t' + "Form" + '\t' +  "Played" + '\t' + "Won" + '\t' + "Lost" + '\t' + "Drawn" + '\t' + "For" + '\t' + "Against" + '\t' + "GlDiff" + '\t' + "Points");
+		//  System.out.println("Official Name" +  '\t' +  "Nick Name" + '\t' + "Form" + '\t' +  "Played" + '\t' + 
+		//  "Won" + '\t' + "Lost" + '\t' + "Drawn" + '\t' + "For" + '\t' + "Against" + '\t' + "GlDiff" + '\t' + "Points");
 	}
 }
 	

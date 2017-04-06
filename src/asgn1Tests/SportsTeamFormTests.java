@@ -24,15 +24,15 @@ SportsTeamForm sportsTeamForm;
 	
 	@Test
 	public void defaultGameList() {
-		String expectedString = sportsTeamForm.toString();
-		assertEquals("-----", expectedString);
+		String actualString = sportsTeamForm.toString();
+		assertEquals("-----", actualString);
 	}
 	
 	@Test
 	public void addOneResult() {
 		sportsTeamForm.addResultToForm(WLD.WIN);
-		String expectedString = sportsTeamForm.toString();
-		assertEquals("W----", expectedString);
+		String actualString = sportsTeamForm.toString();
+		assertEquals("W----", actualString);
 		}
 	
 	@Test

@@ -41,7 +41,7 @@ public class SoccerTeam implements SportsTeam, Comparable<SoccerTeam>{
 	 */
 	public SoccerTeam(String official, String nick) throws TeamException{
 		
-		if(official.equals(null) || official.equals("") || nick.equals(null) || nick.equals("")) {
+		if(official.isEmpty() || official.equals(" ") || nick.isEmpty() || nick.equals(" ")) {
 			throw new TeamException("Team Name cannot be blank");
 		}
 		
@@ -53,18 +53,21 @@ public class SoccerTeam implements SportsTeam, Comparable<SoccerTeam>{
 		this.matchesLost = 0;
 		this.matchesDrawn = 0;
 		this.competitionPoints = 0;
-		form= new SportsTeamForm();
+		form = new SportsTeamForm();
 	}
 	
 	/**
 	 * Displays a String that provides details about the team. The format of the string is as follows
 	 * (where - indicates a tab) :
 	 * 
-	 * official name - nick name - form - matches played - matches won - matches lost - matches drawn - season goals scores - season goals conceded - season goal difference - points
+	 * official name - nick name - form - matches played - matches won - matches lost - matches drawn - season goals scores -
+	 * season goals conceded - season goal difference - points
 	 * 
 	 */
 	public void displayTeamDetails(){
-		System.out.println(officialName  + '\t' + nickName + '\t' + form + '\t' + (+ matchesWon + matchesLost + matchesDrawn) + '\t' + matchesWon + '\t' + matchesLost + '\t' + matchesDrawn +'\t' + goalsScoredSeason + '\t' + goalsConcededSeason + '\t' + this.getGoalDifference() + '\t' + competitionPoints);
+		System.out.println(officialName  + '\t' + nickName + '\t' + form + '\t' + (+ matchesWon + matchesLost + matchesDrawn) + 
+				'\t' + matchesWon + '\t' + matchesLost + '\t' + matchesDrawn +'\t' + goalsScoredSeason + '\t' + 
+				goalsConcededSeason + '\t' + this.getGoalDifference() + '\t' + competitionPoints);
 	}	
 	
 	/**
@@ -163,19 +166,19 @@ public class SoccerTeam implements SportsTeam, Comparable<SoccerTeam>{
 			throw new TeamException("Too many goals scored!");
 		} else if (goalsFor < 0 || goalsAgainst < 0 ) {
 			throw new TeamException("Can't Score Negative Goals!");
-		} else {
+		} else { //Adds the goals for and against and then assigns competition points and win, loss or draw.
 			this.goalsScoredSeason += goalsFor;
 			this.goalsConcededSeason += goalsAgainst;
 		}
-		if(goalsFor == goalsAgainst) {
+		if(goalsFor == goalsAgainst) { //Drawn
 			this.matchesDrawn++;
 			this.competitionPoints += 1;
 			this.form.addResultToForm(WLD.DRAW);
-		} else if (goalsFor > goalsAgainst ) {
+		} else if (goalsFor > goalsAgainst ) { //Win match
 			this.matchesWon++;
 			this.competitionPoints += 3;
 			this.form.addResultToForm(WLD.WIN);
-		} else {
+		} else { //Lost match
 			this.matchesLost++;
 			this.form.addResultToForm(WLD.LOSS);
 		}

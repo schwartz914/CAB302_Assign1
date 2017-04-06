@@ -49,20 +49,18 @@ public class SoccerCompetitionTests {
 	
 	@Test
 	public void startSeasonWithNoTeams() throws LeagueException, CompetitionException{
-		//sc.getLeague(0).startNewSeason();
 		sc.startSeason();
 		Boolean offSeason = sc.getLeague(0).isOffSeason();
 		assertTrue(offSeason);
 	}
 	
-	@Test(expected = LeagueException.class)
+	@Test
 	public void startSeasonWithOneTeam() throws LeagueException, CompetitionException, TeamException{
 		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
 		sc.getLeague(0).registerTeam(team1);
-		sc.getLeague(0).startNewSeason();
-		//sc.startSeason();
-		//Boolean offSeason = sc.getLeague(0).isOffSeason();
-		//assertTrue(offSeason);
+		sc.startSeason();
+		Boolean offSeason = sc.getLeague(0).isOffSeason();
+		assertTrue(offSeason);
 	}
 	
 	@Test(expected = LeagueException.class)
@@ -71,8 +69,7 @@ public class SoccerCompetitionTests {
 		sc.getLeague(0).registerTeam(team1);
 		SoccerTeam team2 = new SoccerTeam("Chelsea", "Blues");
 		sc.getLeague(0).registerTeam(team2);
-		//Boolean offSeason = sc.getLeague(0).isOffSeason();
-		//assertTrue(offSeason);
+
 	}
 	
 	@Test
@@ -89,8 +86,6 @@ public class SoccerCompetitionTests {
 		sc.startSeason();
 		sc.endSeason();
 		assertEquals(team1, sc.getLeague(0).getTopTeam());
-		
-		
 	}
 
 }

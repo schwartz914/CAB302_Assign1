@@ -18,17 +18,47 @@ import asgn1SoccerCompetition.SoccerTeam;
  *
  */
 public class SoccerLeagueTests {
-	SoccerLeague sl;
+	private SoccerLeague sl;
+	private SoccerTeam manU;
+	private SoccerTeam manC;
+	private SoccerTeam chelsea;
+	private SoccerTeam southampton;
 	
 	@Before
 	public void setup() {
 		sl = new SoccerLeague(4);
 	}
 	
+	/*A method to add the teams to test */
+
+	private void registerTeams() throws TeamException, LeagueException {
+		chelsea = new SoccerTeam("Chelsea", "Blues");
+		manC = new SoccerTeam("Manchester City", "City");
+		manU = new SoccerTeam("Manchester United", "Red Devils");
+		southampton = new SoccerTeam("Southampton", "Saints");
+		sl.registerTeam(manU);
+		sl.registerTeam(manC);
+		sl.registerTeam(chelsea);
+		sl.registerTeam(southampton);
+	}
+	
 	@Test
 	public void getRequiredTeams() {
-		int numTeams = sl.getRequiredNumTeams();
-		assertEquals(4, numTeams);
+		int numTeamsRequired = sl.getRequiredNumTeams();
+		assertEquals(4, numTeamsRequired);
+	}
+	
+	@Test
+	public void getRegisteredTeams() throws TeamException, LeagueException {
+		registerTeams();
+		int numRegisteredTeams = sl.getRegisteredNumTeams();
+		assertEquals(4, numRegisteredTeams);
+	}
+	
+	@Test
+	public void getRegisteredNoTeams() {
+		int numRegisteredTeams = sl.getRegisteredNumTeams();
+		assertEquals(0, numRegisteredTeams);
 	}
 	
 	@Test(expected = LeagueException.class)
@@ -39,24 +69,20 @@ public class SoccerLeagueTests {
 	
 	@Test(expected = LeagueException.class)
 	public void getTopTeamErrorThreeTeams() throws TeamException, LeagueException {
-		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
-		SoccerTeam team2 = new SoccerTeam("Manchester City", "City");
-		SoccerTeam team3 = new SoccerTeam("Manchester United", "Red Devils");
-		sl.registerTeam(team1);
-		sl.registerTeam(team2);
-		sl.registerTeam(team3);
-		assertEquals(team1, sl.getTopTeam());
+		SoccerTeam manU = new SoccerTeam("Chelsea", "Blues");
+		SoccerTeam manC = new SoccerTeam("Manchester City", "City");
+		SoccerTeam chelsea = new SoccerTeam("Manchester United", "Red Devils");
+		sl.registerTeam(manU);
+		sl.registerTeam(manC);
+		sl.registerTeam(chelsea);
+		assertEquals(manU, sl.getTopTeam());
 	}
 	
 	@Test(expected = LeagueException.class)
 	public void getBottomTeamErrorThreeTeams() throws TeamException, LeagueException {
-		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
-		SoccerTeam team2 = new SoccerTeam("Manchester City", "City");
-		SoccerTeam team3 = new SoccerTeam("Manchester United", "Red Devils");
-		sl.registerTeam(team1);
-		sl.registerTeam(team2);
-		sl.registerTeam(team3);
-		assertEquals(team3, sl.getBottomTeam());
+		registerTeams();
+		sl.removeTeam(southampton);
+		assertEquals(chelsea, sl.getBottomTeam());
 	}
 	
 	@Test(expected = LeagueException.class)
@@ -67,76 +93,40 @@ public class SoccerLeagueTests {
 	
 	
 	@Test
-	public void getBottomTeamOneMatch() throws TeamException, LeagueException {
-		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
-		SoccerTeam team2 = new SoccerTeam("Manchester City", "City");
-		SoccerTeam team3 = new SoccerTeam("Manchester United", "Red Devils");
-		SoccerTeam team4 = new SoccerTeam("Southampton", "Saints");
-		sl.registerTeam(team1);
-		sl.registerTeam(team2);
-		sl.registerTeam(team3);
-		sl.registerTeam(team4);
+	public void getBottomTeamOneMatch() throws LeagueException, TeamException {
+		registerTeams();
 		sl.startNewSeason();
-		sl.playMatch("Chelsea", 4, "Manchester", 0);
-		assertEquals(team4, sl.getBottomTeam());
+		sl.playMatch("Chelsea", 4, "Manchester United", 0);
+		assertEquals(manU, sl.getBottomTeam());
 	}
 	
 	@Test
 	public void getTopTeamOneMatch() throws TeamException, LeagueException {
-		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
-		SoccerTeam team2 = new SoccerTeam("Manchester City", "City");
-		SoccerTeam team3 = new SoccerTeam("Manchester United", "Red Devils");
-		SoccerTeam team4 = new SoccerTeam("Southampton", "Saints");
-		sl.registerTeam(team1);
-		sl.registerTeam(team2);
-		sl.registerTeam(team3);
-		sl.registerTeam(team4);
+		registerTeams();
 		sl.startNewSeason();
-		sl.playMatch("Chelsea", 4, "Manchester", 0);
-		assertEquals(team1, sl.getTopTeam());
+		sl.playMatch("Chelsea", 4, "Manchester United", 0);
+		assertEquals(chelsea, sl.getTopTeam());
 	}
 	
 	@Test
 	public void containsTeamTestTrue() throws TeamException, LeagueException {
-		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
-		SoccerTeam team2 = new SoccerTeam("Manchester City", "City");
-		sl.registerTeam(team1);
-		sl.registerTeam(team2);
+		registerTeams();
 		assertTrue(sl.containsTeam("Chelsea"));
 	}
 	
 	@Test
 	public void containsTeamTestFalse() throws TeamException, LeagueException {
-		SoccerTeam team1 = new SoccerTeam("Chelsea", "Blues");
-		SoccerTeam team2 = new SoccerTeam("Manchester City", "City");
-		sl.registerTeam(team1);
-		sl.registerTeam(team2);
-		assertFalse(sl.containsTeam("Southampton"));
+		registerTeams();
+		assertFalse(sl.containsTeam("Leeds"));
 	}
 	
-	/*Play Match Tests */
-	/*A method to add the teams to test */
-	SoccerTeam team1;
-	SoccerTeam team2;
-	SoccerTeam team3;
-	SoccerTeam team4;
-	
-	public void registerTeams() throws TeamException, LeagueException {
-		team1 = new SoccerTeam("Chelsea", "Blues");
-		team2 = new SoccerTeam("Manchester City", "City");
-		team3 = new SoccerTeam("Manchester United", "Red Devils");
-		team4 = new SoccerTeam("Southampton", "Saints");
-		sl.registerTeam(team1);
-		sl.registerTeam(team2);
-		sl.registerTeam(team3);
-		sl.registerTeam(team4);
-	}
+
 	@Test(expected = LeagueException.class)
 	public void sameNamePlayMatch() throws TeamException, LeagueException {
 		registerTeams();
 		sl.startNewSeason();
 		sl.playMatch("Chelsea", 5, "Chelsea", 2);
-		assertEquals(3, team1.getCompetitionPoints());
+		assertEquals(3, manU.getCompetitionPoints());
 
 	}
 	
@@ -144,23 +134,23 @@ public class SoccerLeagueTests {
 	public void seasonNotStartedPlayMatch() throws TeamException, LeagueException {
 		registerTeams();
 		sl.playMatch("Chelsea", 5, "Southampton", 2);
-		assertEquals(0, team4.getCompetitionPoints());
+		assertEquals(0, southampton.getCompetitionPoints());
 	}
 	
-	@Test(expected = TeamException.class)
+	@Test
 	public void excessGoalsPlayMatch() throws TeamException, LeagueException {
 		registerTeams();
 		sl.startNewSeason();
 		sl.playMatch("Chelsea", 21, "Southampton", 2);
-		assertEquals(0, team4.getCompetitionPoints());
+		assertEquals(0, manU.getCompetitionPoints());
 	}
 	
-	@Test(expected = TeamException.class)
+	@Test
 	public void negativeGoalsPlayMatch() throws TeamException, LeagueException {
 		registerTeams();
 		sl.startNewSeason();
 		sl.playMatch("Chelsea", 5, "Southampton", -2);
-		assertEquals(0, team4.getCompetitionPoints());
+		assertEquals(0, manU.getCompetitionPoints());
 	}
 	
 	@Test
@@ -168,7 +158,89 @@ public class SoccerLeagueTests {
 		registerTeams();
 		sl.startNewSeason();
 		sl.playMatch("Chelsea", 20, "Southampton", 2);
-		assertEquals(20, team1.getGoalsScoredSeason());
+		assertEquals(20, chelsea.getGoalsScoredSeason());
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void getTeamTestFail() throws LeagueException, TeamException {
+		registerTeams();
+		SoccerTeam leeds;
+		leeds = sl.getTeamByOfficalName("Leeds");
+		assertNotNull(leeds);
+	}
+	
+	@Test
+	public void getTeamPass() throws TeamException, LeagueException {
+		registerTeams();
+		SoccerTeam result;
+		result = sl.getTeamByOfficalName("Chelsea");
+		assertEquals(chelsea, result);
+	}
+	
+	@Test
+	public void startSeasonPass() throws TeamException, LeagueException {
+		registerTeams();
+		sl.startNewSeason();
+		assertFalse(sl.isOffSeason());
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void startSeasonNoTeams() throws LeagueException {
+		sl.startNewSeason();
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void startSeasonTwice() throws TeamException, LeagueException {
+		registerTeams();
+		sl.startNewSeason();
+		sl.startNewSeason();
+	}
+	
+	@Test
+	public void removeTeamWorks() throws TeamException, LeagueException {
+		registerTeams();
+		sl.removeTeam(chelsea);
+		assertFalse(sl.containsTeam("Chelsea"));
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void removeTeamNotRegistered() throws TeamException, LeagueException {
+		registerTeams();
+		SoccerTeam leeds = new SoccerTeam("Leeds United", "The Peacocks");
+		sl.removeTeam(leeds);
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void removeTeamNotOffSeason() throws TeamException, LeagueException {
+		registerTeams();
+		sl.startNewSeason();
+		sl.removeTeam(manU);
+	}
+	
+	@Test
+	public void registerTeamWorks() throws TeamException, LeagueException {
+		SoccerTeam leeds = new SoccerTeam("Leeds United", "The Peacocks");
+		sl.registerTeam(leeds);
+		assertTrue(sl.containsTeam("Leeds United"));
+	}
+	@Test(expected = LeagueException.class)
+	public void registerTeamAlreadyRegistered() throws TeamException, LeagueException {
+		registerTeams();
+		sl.registerTeam(manU);
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void registerTeamSeasonStarted() throws TeamException, LeagueException {
+		registerTeams();
+		sl.startNewSeason();
+		sl.registerTeam(manU);
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void registerTeamMaxTeams() throws TeamException, LeagueException {
+		registerTeams();
+		SoccerTeam leeds = new SoccerTeam("Leeds United", "The Peacocks");
+		sl.registerTeam(leeds);
 	}
 }
 

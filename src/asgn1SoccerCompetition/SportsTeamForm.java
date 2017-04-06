@@ -47,7 +47,7 @@ public class SportsTeamForm {
 	 *
 	 */
 	public void addResultToForm(WLD result){
-		while(gameList.size() >= 5) {
+		while(gameList.size() >= 5) { //Removes any result that is number 5 or over in the List.
 			gameList.remove(4);
 		}
 		gameList.addFirst(result);
@@ -66,11 +66,12 @@ public class SportsTeamForm {
 	 */
 	public String toString(){
 		String result = "";
+		//Adds the char to the list or a - if no result.
 		for(int i=0; i < maxLength; i++) {
 			if(gameList.get(i) != null) {
-				result = result + gameList.get(i).getChar();
+				result += gameList.get(i).getChar();
 			} else {
-				result = result + '-';
+				result += '-';
 			}
 		}
 		return result;
@@ -89,7 +90,7 @@ public class SportsTeamForm {
 				count++;
 			}
 		}
-		return count;
+		return count++;
 	}
 	
 	/**
