@@ -18,6 +18,8 @@ import asgn1SoccerCompetition.SoccerTeam;
  */
 public class SoccerTeamTests {
 SoccerTeam team;
+SoccerTeam chelsea;
+SoccerTeam manC;
 	
 	@Before
 	public void setup() throws TeamException{
@@ -247,4 +249,46 @@ SoccerTeam team;
 		SoccerTeam noName = new SoccerTeam(" ", " ");
 	}
 	
+	@Test
+	public void compareToDiffName() throws TeamException {
+		chelsea = new SoccerTeam("Chelsea", "Blues");
+		manC = new SoccerTeam("Manchester City", "City");
+		int result = chelsea.compareTo(manC);
+		assertEquals(-10, result);
+	}
+	
+	@Test
+	public void compareToCompPoints() throws TeamException {
+		chelsea = new SoccerTeam("Chelsea", "Blues");
+		manC = new SoccerTeam("Manchester City", "City");
+		chelsea.playMatch(4,0);
+		manC.playMatch(0, 4);
+		int result = chelsea.compareTo(manC);
+		assertEquals(-3, result);
+	}
+	
+	@Test
+	public void compareToGoalDiff() throws TeamException {
+		chelsea = new SoccerTeam("Chelsea", "Blues");
+		manC = new SoccerTeam("Manchester City", "City");
+		chelsea.playMatch(4,0);
+		manC.playMatch(3, 0);
+		int result = chelsea.compareTo(manC);
+		assertEquals(-1, result);
+	}
+	
+	@Test
+	public void compareSame() throws TeamException {
+		chelsea = new SoccerTeam("Chelsea", "Blues");
+		int result = chelsea.compareTo(chelsea);
+		assertEquals(0, result);
+	}
+	
+	@Test
+	public void resetStats() throws TeamException {
+		chelsea = new SoccerTeam("Chelsea", "Blues");
+		chelsea.playMatch(4, 0);
+		chelsea.resetStats();
+		assertEquals(0, chelsea.getCompetitionPoints());
+	}
 }

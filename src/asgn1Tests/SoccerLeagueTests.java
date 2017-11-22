@@ -189,6 +189,19 @@ public class SoccerLeagueTests {
 		sl.startNewSeason();
 	}
 	
+	@Test
+	public void endSeasonWorks() throws TeamException, LeagueException {
+		registerTeams();
+		sl.startNewSeason();
+		sl.endSeason();
+		assertTrue(sl.isOffSeason());
+	}
+	
+	@Test(expected = LeagueException.class)
+	public void endSeasonFails() throws LeagueException {
+		sl.endSeason();
+	}
+	
 	@Test(expected = LeagueException.class)
 	public void startSeasonTwice() throws TeamException, LeagueException {
 		registerTeams();
@@ -233,7 +246,8 @@ public class SoccerLeagueTests {
 	public void registerTeamSeasonStarted() throws TeamException, LeagueException {
 		registerTeams();
 		sl.startNewSeason();
-		sl.registerTeam(manU);
+		SoccerTeam leeds = new SoccerTeam("Leeds United", "The Peacocks");
+		sl.registerTeam(leeds);
 	}
 	
 	@Test(expected = LeagueException.class)
